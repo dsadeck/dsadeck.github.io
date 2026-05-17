@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",
-    "postbuild": "cp dist/index.html dist/404.html && touch dist/.nojekyll",
+    "postbuild": "bash scripts/postbuild.sh",
     "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
