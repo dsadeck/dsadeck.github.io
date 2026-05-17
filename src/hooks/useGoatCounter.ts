@@ -18,11 +18,12 @@ declare global {
  * navigations would be invisible.
  *
  * No-ops when:
- *  - the snippet wasn't injected (localhost) or hasn't loaded yet
- *  - an adblocker has eaten gc.zgo.at
+ *  - the snippet wasn't injected (localhost)
+ *  - an adblocker has eaten gc.zgo.at (count.js never loads)
  *
- * On first mount, count.js may still be loading; we retry once after a
- * short delay so the very first pageview isn't silently dropped.
+ * On first mount, count.js may still be loading. We poll with backoff up
+ * to ~6s so the initial pageview survives slow connections, deprioritized
+ * async script loads, and PWA cold starts.
  */
 export function useGoatCounter(): void {
   const location = useLocation();
@@ -31,18 +32,34 @@ export function useGoatCounter(): void {
     const path = location.pathname + location.search;
     const title = document.title;
 
-    const ping = () => {
+    const tryPing = (): boolean => {
       const gc = window.goatcounter;
-      if (gc && typeof gc.count === "function") gc.count({ path, title });
+      if (gc && typeof gc.count === "function") {
+        gc.count({ path, title });
+        return true;
+      }
+      return false;
     };
 
-    if (window.goatcounter && typeof window.goatcounter.count === "function") {
-      ping();
-      return;
-    }
+    if (tryPing()) return;
 
-    // Retry once for the initial mount race against the async script load.
-    const t = window.setTimeout(ping, 1000);
-    return () => window.clearTimeout(t);
+    let done = false;
+    const delays = [100, 300, 700, 1500, 3000];
+    const timers: number[] = [];
+    delays.forEach((d) => {
+      timers.push(
+        window.setTimeout(() => {
+          if (done) return;
+          if (tryPing()) {
+            done = true;
+            timers.forEach((t) => window.clearTimeout(t));
+          }
+        }, d),
+      );
+    });
+    return () => {
+      done = true;
+      timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [location.pathname, location.search]);
 }
