@@ -101,6 +101,7 @@ What stays on your device:
 What gets recorded server-side:
 
 - Pageviews (URL path + page title), referrer, browser/OS family, and a country derived from your IP — collected by [GoatCounter](https://www.goatcounter.com/) with **no cookies** and **no individual user identifiers**. IPs are hashed with a daily-rotating salt and never stored. The dashboard tells me things like "20 people opened the Catalog this week" — never "user X did Y."
+- The dashboard is public — verify for yourself at <https://dsadeck.goatcounter.com>. If something there ever looks like per-user data, open an issue.
 
 How to opt out:
 

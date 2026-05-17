@@ -25,7 +25,15 @@ export default function App() {
         </Routes>
       </main>
       <footer className="mx-auto max-w-5xl px-4 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
-        Grindspace · MIT · Your data lives only in this browser.
+        Grindspace · MIT · Your data lives only in this browser ·{" "}
+        <a
+          href="https://dsadeck.goatcounter.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline decoration-dotted underline-offset-2 hover:text-slate-700 dark:hover:text-slate-200"
+        >
+          Public traffic stats
+        </a>
       </footer>
     </div>
   );
