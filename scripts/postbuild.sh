@@ -31,6 +31,16 @@ ROUTES=(catalog stats settings)
 for route in "${ROUTES[@]}"; do
   mkdir -p "dist/$route"
   cp dist/index.html "dist/$route/index.html"
+
+  # Rewrite every `https://dsadeck.github.io/"` (the homepage URL in
+  # quotes — appears in <link rel="canonical">, <meta og:url>, and the
+  # JSON-LD "url" field) to the per-route trailing-slash URL. Without
+  # this, Google sees /catalog/ declare itself a copy of / and dedupes
+  # the page out of the index.
+  sed -i.bak \
+    -e "s#https://dsadeck\.github\.io/\"#https://dsadeck.github.io/$route/\"#g" \
+    "dist/$route/index.html"
+  rm -f "dist/$route/index.html.bak"
 done
 
 echo "✓ postbuild: 404.html + .nojekyll + ${#ROUTES[@]} indexable route(s)"

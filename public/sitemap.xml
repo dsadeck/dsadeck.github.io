@@ -6,17 +6,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://dsadeck.github.io/catalog</loc>
+    <loc>https://dsadeck.github.io/catalog/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://dsadeck.github.io/stats</loc>
+    <loc>https://dsadeck.github.io/stats/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://dsadeck.github.io/settings</loc>
+    <loc>https://dsadeck.github.io/settings/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
