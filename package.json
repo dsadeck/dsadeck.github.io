@@ -13,7 +13,7 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "postbuild": "cp dist/index.html dist/404.html && touch dist/.nojekyll",
-    "deploy": "npm run build && gh-pages -d dist -b gh-pages -t"
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "date-fns": "^3.6.0",
