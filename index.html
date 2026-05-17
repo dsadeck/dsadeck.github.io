@@ -11,5 +11,28 @@
   <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!--
+      Privacy-respecting analytics (GoatCounter): aggregate pageviews only,
+      no cookies, hashed IPs. Skipped on localhost so dev runs don't
+      pollute the dashboard. `no_onload: true` defers the initial count to
+      `useGoatCounter` in src/hooks/, which pings on every React Router
+      navigation so SPA routes are visible (otherwise only the entry HTML
+      would be counted).
+    -->
+    <script>
+      (function () {
+        var h = location.hostname;
+        if (h === "localhost" || h === "127.0.0.1") return;
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "//gc.zgo.at/count.js";
+        s.setAttribute(
+          "data-goatcounter",
+          "https://dsadeck.goatcounter.com/count",
+        );
+        s.setAttribute("data-goatcounter-settings", '{"no_onload": true}');
+        document.head.appendChild(s);
+      })();
+    </script>
   </body>
 </html>

@@ -6,8 +6,10 @@ import { ProblemPage } from "@/pages/ProblemPage";
 import { SessionPage } from "@/pages/SessionPage";
 import { StatsPage } from "@/pages/StatsPage";
 import { SettingsPage } from "@/pages/SettingsPage";
+import { useGoatCounter } from "@/hooks/useGoatCounter";
 
 export default function App() {
+  useGoatCounter();
   return (
     <div className="min-h-full">
       <NavBar />

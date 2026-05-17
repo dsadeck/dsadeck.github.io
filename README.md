@@ -4,7 +4,7 @@
 
 Grindspace is a spaced-repetition trainer for the [NeetCode 150](https://neetcode.io/practice/practice/neetcode150). Solve a Problem, rate how it went, and Grindspace decides when to show it to you next so you actually retain it instead of re-solving the same problems forever.
 
-All progress lives in your browser's `localStorage` — no accounts, no backend, no telemetry. Open-source under MIT, designed to be forked and self-hosted.
+All progress lives in your browser's `localStorage` — no accounts, no backend, no per-user tracking. Your ratings, notes, and code never leave your device. The site uses [GoatCounter](https://www.goatcounter.com/) for anonymous aggregate pageview counts (no cookies, hashed IPs); see [Privacy](#privacy). Open-source under MIT, designed to be forked and self-hosted.
 
 ## Why
 
@@ -92,6 +92,23 @@ A heatmap of activity, per-topic mastery rings, totals. The whole point: see you
 - **Drill updates SR** — see Drill mode above.
 - **Reset everything** — wipe all progress in this browser. Cannot be undone (no cloud backup).
 
+## Privacy
+
+What stays on your device:
+
+- Every rating, attempt, note, and code snippet you write — kept in browser `localStorage` only. No sync, no backup, no upload, no third party sees it.
+
+What gets recorded server-side:
+
+- Pageviews (URL path + page title), referrer, browser/OS family, and a country derived from your IP — collected by [GoatCounter](https://www.goatcounter.com/) with **no cookies** and **no individual user identifiers**. IPs are hashed with a daily-rotating salt and never stored. The dashboard tells me things like "20 people opened the Catalog this week" — never "user X did Y."
+
+How to opt out:
+
+- Use any adblocker — `gc.zgo.at` is on most blocklists (uBlock Origin, Brave's shields, etc.) and the analytics call will simply fail without affecting the app.
+- Or block the GoatCounter domain manually: `gc.zgo.at`.
+
+The analytics snippet lives in [`index.html`](./index.html) and is wired up via [`src/hooks/useGoatCounter.ts`](./src/hooks/useGoatCounter.ts) so SPA navigations are also counted.
+
 ## Run locally
 
 ```bash
@@ -100,6 +117,8 @@ npm run dev      # http://localhost:5173
 npm test         # vitest (50+ tests covering scheduler, session engine, hooks)
 npm run lint
 ```
+
+The analytics snippet is automatically skipped on `localhost` / `127.0.0.1`, so dev runs don't pollute the dashboard.
 
 ## Deploy
 
