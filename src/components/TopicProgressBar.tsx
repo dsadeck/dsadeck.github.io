@@ -15,10 +15,8 @@ export function TopicProgressBar({
   return (
     <div
       className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800"
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={total}
-      aria-valuenow={mastered}
+      role="img"
+      aria-label={`${mastered} of ${total} mastered, ${reviewing} reviewing, ${learning} learning`}
     >
       <div className="flex h-full">
         <div

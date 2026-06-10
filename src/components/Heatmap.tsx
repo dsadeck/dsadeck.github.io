@@ -51,12 +51,14 @@ export function Heatmap({
     columns.push(column);
   }
 
+  const totalCount = entries.reduce((acc, e) => acc + e.count, 0);
+
   return (
     <div className="overflow-x-auto">
       <div
         className="grid grid-flow-col grid-rows-7 gap-1 text-[10px]"
         role="img"
-        aria-label="Attempt heatmap"
+        aria-label={`Attempt heatmap: ${totalCount} attempt${totalCount === 1 ? "" : "s"} in the last ${days} days`}
       >
         {columns.flatMap((col, ci) =>
           col.map((e, ri) =>
@@ -73,7 +75,7 @@ export function Heatmap({
         )}
       </div>
       <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-        Last {days} days · {entries.reduce((acc, e) => acc + e.count, 0)} attempts
+        Last {days} days · {totalCount} attempts
       </p>
     </div>
   );

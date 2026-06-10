@@ -12,28 +12,48 @@
   body {
     @apply font-sans antialiased;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-950 disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  /* 44px minimum touch target on touch-first devices. */
+  @media (pointer: coarse) {
+    .btn {
+      min-height: 2.75rem;
+    }
   }
   .btn-primary {
-    @apply btn bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white focus:ring-slate-500;
+    @apply btn bg-slate-900 text-white hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white focus-visible:ring-slate-500;
   }
   .btn-secondary {
-    @apply btn bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 focus:ring-slate-400;
+    @apply btn bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700 focus-visible:ring-slate-400;
   }
   .btn-ghost {
-    @apply btn bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 focus:ring-slate-400;
+    @apply btn bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 focus-visible:ring-slate-400;
   }
   .btn-danger {
-    @apply btn bg-rose-600 text-white hover:bg-rose-500 focus:ring-rose-500;
+    @apply btn bg-rose-600 text-white hover:bg-rose-500 focus-visible:ring-rose-500;
   }
   .card {
     @apply rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900;
   }
   .pill {
     @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  /* Ember accent for inline links: the one identity color, used sparingly. */
+  .link {
+    @apply font-medium text-orange-700 underline decoration-orange-700/40 underline-offset-2 hover:decoration-orange-700 dark:text-orange-400 dark:decoration-orange-400/40 dark:hover:decoration-orange-400;
   }
 }

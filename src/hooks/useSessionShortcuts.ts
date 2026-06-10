@@ -9,6 +9,7 @@ import type { Rating } from "@/lib/types";
  *  - `1` / `2` / `3` / `4` (when revealed):             select Again / Hard / Good / Easy
  *  - `Enter` (when revealed and a rating is selected):  submit the rating
  *  - `Escape` (when revealed):                          collapse the form
+ *  - `U` (while an undo window is open):                undo the last saved rating
  *
  * The hook intentionally ignores key events that:
  *  - Originate from a text input, textarea, select, or contentEditable element.
@@ -26,6 +27,8 @@ export function useSessionShortcuts({
   onSelectRating,
   onSubmit,
   onCollapse,
+  canUndo = false,
+  onUndo,
 }: {
   enabled: boolean;
   revealed: boolean;
@@ -34,6 +37,8 @@ export function useSessionShortcuts({
   onSelectRating: (rating: Rating) => void;
   onSubmit: () => void;
   onCollapse: () => void;
+  canUndo?: boolean;
+  onUndo?: () => void;
 }): void {
   useEffect(() => {
     if (!enabled) return;
@@ -52,6 +57,12 @@ export function useSessionShortcuts({
       }
 
       if (inEditable) return;
+
+      if ((e.key === "u" || e.key === "U") && canUndo && onUndo) {
+        e.preventDefault();
+        onUndo();
+        return;
+      }
 
       if (!revealed) {
         if (e.key === " " || e.code === "Space") {
@@ -84,6 +95,8 @@ export function useSessionShortcuts({
     onSelectRating,
     onSubmit,
     onCollapse,
+    canUndo,
+    onUndo,
   ]);
 }
 

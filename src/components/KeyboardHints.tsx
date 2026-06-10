@@ -17,7 +17,7 @@ export function KeyboardHints({
 }) {
   return (
     <div
-      className={`flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 dark:text-slate-400 ${className}`}
+      className={`flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 dark:text-slate-400 [@media(pointer:coarse)]:hidden ${className}`}
       aria-label="Keyboard shortcuts"
     >
       {hints.map((hint, i) => (

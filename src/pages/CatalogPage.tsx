@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { PROBLEMS, problemsByTopic } from "@/data/problems";
 import { useProgress } from "@/context/ProgressContext";
@@ -32,6 +32,28 @@ export function CatalogPage() {
   const [statusFilter, setStatusFilter] = useState<Status | "all">("all");
   const [difficultyFilter, setDifficultyFilter] = useState<Difficulty | "all">("all");
   const [collapsed, setCollapsed] = useState<Set<Topic>>(new Set());
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  // `/` focuses the search box, matching the convention of GitHub and co.
+  useEffect(() => {
+    function handler(e: KeyboardEvent) {
+      if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      e.preventDefault();
+      searchRef.current?.focus();
+    }
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const grouped = useMemo(() => problemsByTopic(), []);
 
@@ -78,10 +100,11 @@ export function CatalogPage() {
       <div className="card p-4">
         <div className="flex flex-wrap items-center gap-3">
           <input
+            ref={searchRef}
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search problems, topics, patterns..."
+            placeholder="Search problems, topics, patterns... ( / )"
             className="flex-1 min-w-[14rem] rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 dark:border-slate-700 dark:bg-slate-900"
             aria-label="Search"
           />

@@ -62,24 +62,41 @@ export function StatsPage() {
   const totalAttempts = allAttempts.length;
   const totalMastered = topicStats.reduce((acc, t) => acc + t.mastered, 0);
 
+  if (totalAttempts === 0) {
+    return (
+      <div className="card p-6 text-center">
+        <h1 className="text-lg font-semibold">No stats yet</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Your attempts, streak, and per-topic mastery will show up here after
+          your first rated problem.
+        </p>
+        <div className="mt-4 flex justify-center">
+          <Link to="/" className="btn-primary">
+            Start on Today
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      <section className="card p-6">
+      <section className="pt-2">
         <h1 className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Overview
         </h1>
-        <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Stat label="Attempts" value={totalAttempts} />
           <Stat label="Mastered" value={`${totalMastered}/${PROBLEMS.length}`} />
           <Stat
             label="Mastery"
             value={`${Math.round((totalMastered / PROBLEMS.length) * 100)}%`}
           />
-          <Stat label="Streak" value={`${streak}d`} />
+          <Stat label="Streak" value={`${streak}d`} accent={streak > 0} />
         </div>
       </section>
 
-      <section className="card p-6">
+      <section className="border-t border-slate-200 pt-5 dark:border-slate-800">
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Activity
         </h2>
@@ -113,7 +130,7 @@ export function StatsPage() {
       {leaks.length > 0 && (
         <section className="card p-6">
           <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-            Leaks (≥ 2 Again ratings)
+            Weak spots · rated Again twice or more
           </h2>
           <ul className="divide-y divide-slate-100 dark:divide-slate-800">
             {leaks.map((l) => {
@@ -127,7 +144,7 @@ export function StatsPage() {
                   <span>{problem.title}</span>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {l.count} fails
+                      {l.count}× Again
                     </span>
                     <Link
                       to={`/session?source=single&id=${encodeURIComponent(l.id)}`}
@@ -143,23 +160,28 @@ export function StatsPage() {
         </section>
       )}
 
-      {totalAttempts === 0 && (
-        <p className="card p-6 text-center text-sm text-slate-500 dark:text-slate-400">
-          No data yet. Go solve something on the{" "}
-          <Link to="/" className="underline">
-            Today
-          </Link>{" "}
-          page.
-        </p>
-      )}
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string | number }) {
+function Stat({
+  label,
+  value,
+  accent = false,
+}: {
+  label: string;
+  value: string | number;
+  accent?: boolean;
+}) {
   return (
     <div>
-      <p className="text-2xl font-semibold">{value}</p>
+      <p
+        className={`text-3xl font-semibold tracking-tight tabular-nums ${
+          accent ? "text-orange-700 dark:text-orange-400" : ""
+        }`}
+      >
+        {value}
+      </p>
       <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
     </div>
   );

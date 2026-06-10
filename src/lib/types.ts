@@ -97,6 +97,11 @@ export type Settings = {
    * advancing the scheduler. `again` always advances regardless.
    */
   drillUpdatesSr: boolean;
+  /**
+   * If true, picking a rating (click or 1-4 key) saves immediately and
+   * advances to the next Problem. Undo remains available for a few seconds.
+   */
+  instantRating: boolean;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -104,6 +109,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: "system",
   defaultLanguage: "python",
   drillUpdatesSr: true,
+  instantRating: false,
 };
 
 export const STORAGE_KEY = "grindspace:v1";

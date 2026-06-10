@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { getProblemById } from "@/data/problems";
 import { useProgress } from "@/context/ProgressContext";
@@ -25,7 +25,20 @@ export function ProblemPage() {
   }, [progress.nextDue, status]);
 
   if (!problem) {
-    return <Navigate to="/catalog" replace />;
+    return (
+      <div className="card p-6 text-center">
+        <h1 className="text-lg font-semibold">Problem not found</h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          No problem matches this link. It may have been mistyped or removed
+          from the catalog.
+        </p>
+        <div className="mt-4 flex justify-center">
+          <Link to="/catalog" className="btn-primary">
+            Browse the catalog
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const stats = computeStats(progress.attempts);
@@ -47,7 +60,10 @@ export function ProblemPage() {
           <DifficultyPill difficulty={problem.difficulty} />
           <StatusPill status={status} />
           {progress.box > 0 && (
-            <span className="text-sm text-slate-500 dark:text-slate-400">
+            <span
+              className="text-sm text-slate-500 dark:text-slate-400"
+              title={`Leitner box ${progress.box} of 5. Higher boxes mean longer gaps between reviews.`}
+            >
               Box {progress.box}
             </span>
           )}
@@ -103,12 +119,17 @@ export function ProblemPage() {
                 }
               }}
               onBlur={() => setConfirmingReset(false)}
-              title="Wipes this Problem's progress and Attempts. Other Problems are untouched."
             >
               {confirmingReset ? "Click again to confirm" : "Reset progress"}
             </button>
           )}
         </div>
+        {confirmingReset && (
+          <p className="mt-2 text-right text-xs text-rose-600 dark:text-rose-400">
+            Wipes this problem's progress and attempts. There is no undo.
+            Other problems are untouched.
+          </p>
+        )}
       </section>
 
       <h2 className="mt-2 text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -131,7 +152,7 @@ function Stat({
       <dt className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {label}
       </dt>
-      <dd className="mt-0.5 font-medium">{children}</dd>
+      <dd className="mt-0.5 font-medium tabular-nums">{children}</dd>
     </div>
   );
 }

@@ -5,10 +5,16 @@ export function NavBar() {
   const { mode, setMode } = useTheme();
 
   return (
-    <header className="border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 sticky top-0 z-10">
+    <header className="border-b border-slate-200 bg-slate-50/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 sticky top-0 z-10">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-semibold">Grindspace</span>
+          <span className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <span
+              aria-hidden="true"
+              className="inline-block h-2.5 w-2.5 rounded-sm bg-orange-600 dark:bg-orange-500"
+            />
+            Grindspace
+          </span>
           <span className="hidden text-xs text-slate-500 dark:text-slate-400 sm:inline">
             NeetCode 150, with spaced repetition
           </span>
@@ -21,7 +27,7 @@ export function NavBar() {
           <button
             type="button"
             className="btn-ghost ml-2"
-            aria-label="Toggle theme"
+            aria-label={`Theme: ${mode}. Click to change.`}
             onClick={() => {
               const next =
                 mode === "light" ? "dark" : mode === "dark" ? "system" : "light";

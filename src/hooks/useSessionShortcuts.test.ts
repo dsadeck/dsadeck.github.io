@@ -8,6 +8,7 @@ type Handlers = {
   onSelectRating: ReturnType<typeof vi.fn>;
   onSubmit: ReturnType<typeof vi.fn>;
   onCollapse: ReturnType<typeof vi.fn>;
+  onUndo: ReturnType<typeof vi.fn>;
 };
 
 function makeHandlers(): Handlers {
@@ -16,6 +17,7 @@ function makeHandlers(): Handlers {
     onSelectRating: vi.fn(),
     onSubmit: vi.fn(),
     onCollapse: vi.fn(),
+    onUndo: vi.fn(),
   };
 }
 
@@ -23,6 +25,7 @@ function setup(opts: {
   enabled?: boolean;
   revealed?: boolean;
   hasRating?: boolean;
+  canUndo?: boolean;
 }) {
   const handlers = makeHandlers();
   const { rerender, unmount } = renderHook(
@@ -30,6 +33,7 @@ function setup(opts: {
       enabled: boolean;
       revealed: boolean;
       hasRating: boolean;
+      canUndo: boolean;
     }) =>
       useSessionShortcuts({
         ...props,
@@ -40,6 +44,7 @@ function setup(opts: {
         enabled: opts.enabled ?? true,
         revealed: opts.revealed ?? false,
         hasRating: opts.hasRating ?? false,
+        canUndo: opts.canUndo ?? false,
       },
     },
   );
@@ -171,9 +176,35 @@ describe("useSessionShortcuts", () => {
     press("1");
     expect(handlers.onSelectRating).not.toHaveBeenCalled();
 
-    rerender({ enabled: true, revealed: true, hasRating: false });
+    rerender({ enabled: true, revealed: true, hasRating: false, canUndo: false });
     press("2");
     expect(handlers.onSelectRating).toHaveBeenCalledWith("hard");
+  });
+
+  it("undoes on U when an undo window is open", () => {
+    const { handlers } = setup({ revealed: false, canUndo: true });
+    press("u");
+    expect(handlers.onUndo).toHaveBeenCalledTimes(1);
+    press("U");
+    expect(handlers.onUndo).toHaveBeenCalledTimes(2);
+  });
+
+  it("ignores U when there is nothing to undo", () => {
+    const { handlers } = setup({ revealed: true, canUndo: false });
+    press("u");
+    expect(handlers.onUndo).not.toHaveBeenCalled();
+  });
+
+  it("ignores U originating from a textarea", () => {
+    const { handlers } = setup({ revealed: true, canUndo: true });
+    const ta = document.createElement("textarea");
+    document.body.appendChild(ta);
+    try {
+      press("u", {}, ta);
+      expect(handlers.onUndo).not.toHaveBeenCalled();
+    } finally {
+      document.body.removeChild(ta);
+    }
   });
 
   it("calls preventDefault on handled keys", () => {

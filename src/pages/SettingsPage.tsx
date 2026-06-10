@@ -68,12 +68,13 @@ export function SettingsPage() {
         </Row>
 
         <Row
-          label="Drill updates SR"
-          hint="If off, drill-mode hard/good/easy ratings log only; the schedule isn't advanced. 'Again' always reschedules."
+          label="Drill affects schedule"
+          hint="When off, Hard, Good, and Easy ratings in a Drill are logged without changing when the problem is next due. Again always reschedules."
         >
           <label className="inline-flex cursor-pointer items-center gap-2 text-sm">
             <input
               type="checkbox"
+              className="h-5 w-5 accent-emerald-600"
               checked={store.settings.drillUpdatesSr}
               onChange={(e) =>
                 updateSettings((s) => ({
@@ -83,6 +84,26 @@ export function SettingsPage() {
               }
             />
             <span>{store.settings.drillUpdatesSr ? "On" : "Off"}</span>
+          </label>
+        </Row>
+
+        <Row
+          label="Instant rating"
+          hint="Picking a rating (click or keys 1-4) saves immediately and moves to the next problem. Undo stays available for a few seconds."
+        >
+          <label className="inline-flex cursor-pointer items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="h-5 w-5 accent-emerald-600"
+              checked={store.settings.instantRating}
+              onChange={(e) =>
+                updateSettings((s) => ({
+                  ...s,
+                  instantRating: e.target.checked,
+                }))
+              }
+            />
+            <span>{store.settings.instantRating ? "On" : "Off"}</span>
           </label>
         </Row>
       </section>
@@ -113,13 +134,14 @@ export function SettingsPage() {
           Danger zone
         </h2>
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          Reset Everything wipes all your Grindspace data in this browser. There
-          is no undo and no backup (see{" "}
+          Reset Everything wipes all your Grindspace data in this browser.
+          There is no undo and no backup: Grindspace deliberately has no
+          export/import, so your progress lives only here (see{" "}
           <a
-            href="https://github.com/yourname/grindspace/blob/main/docs/adr/0004-no-export-import.md"
+            href="https://github.com/dsadeck/dsadeck.github.io/blob/main/docs/adr/0004-no-export-import.md"
             target="_blank"
             rel="noreferrer"
-            className="underline"
+            className="link"
           >
             ADR-0004
           </a>

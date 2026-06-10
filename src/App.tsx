@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { NavBar } from "@/components/NavBar";
 import { TodayPage } from "@/pages/TodayPage";
 import { CatalogPage } from "@/pages/CatalogPage";
@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/session" element={<SessionPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <footer className="mx-auto max-w-5xl px-4 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
@@ -35,6 +35,22 @@ export default function App() {
           Public traffic stats
         </a>
       </footer>
+    </div>
+  );
+}
+
+function NotFound() {
+  return (
+    <div className="card p-6 text-center">
+      <h1 className="text-lg font-semibold">Page not found</h1>
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        Nothing lives at this address.
+      </p>
+      <div className="mt-4 flex justify-center">
+        <Link to="/" className="btn-primary">
+          Back to Today
+        </Link>
+      </div>
     </div>
   );
 }

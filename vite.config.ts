@@ -18,8 +18,8 @@ export default defineConfig(({ command }) => ({
         name: "Grindspace",
         short_name: "Grindspace",
         description: "Spaced repetition for the NeetCode 150",
-        theme_color: "#0f172a",
-        background_color: "#0f172a",
+        theme_color: "#141210",
+        background_color: "#141210",
         display: "standalone",
         start_url: ".",
         // For full installability across Safari/Android, drop real PNGs into

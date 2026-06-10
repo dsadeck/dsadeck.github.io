@@ -43,7 +43,10 @@ export function ProblemRow({ problem }: { problem: Problem }) {
           <DifficultyPill difficulty={problem.difficulty} />
           <StatusPill status={status} />
           {progress.box > 0 && (
-            <span className="text-xs text-slate-500 dark:text-slate-400">
+            <span
+              className="text-xs text-slate-500 dark:text-slate-400"
+              title={`Leitner box ${progress.box} of 5. Higher boxes mean longer gaps between reviews.`}
+            >
               Box {progress.box}
             </span>
           )}
@@ -71,9 +74,12 @@ export function ProblemRow({ problem }: { problem: Problem }) {
         >
           Practice now
         </Link>
+        {/* On touch screens Suspend moves to the problem page: it sits one
+            mis-tap away from "Practice now" and silently removes the problem
+            from every queue. */}
         <button
           type="button"
-          className="btn-ghost"
+          className="btn-ghost hidden sm:inline-flex"
           onClick={() => setSuspended(problem.id, !progress.suspended)}
           aria-label={progress.suspended ? "Unsuspend" : "Suspend"}
           title={progress.suspended ? "Unsuspend" : "Suspend (hide from queue)"}
