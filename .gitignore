@@ -36,3 +36,6 @@ coverage
 
 # PWA generated assets
 dev-dist
+
+# Local design-review snapshots
+.impeccable
