@@ -142,19 +142,36 @@ export function buildDueQueue(input: {
   return rows.map((r) => r.id);
 }
 
-/** Returns up to `limit` unseen Problem ids (Problems the user has never attempted). */
+/**
+ * Returns up to `limit` unseen Problem ids (Problems the user has never
+ * attempted), sampled randomly across all topics so sessions aren't always
+ * pulled from the first topic in catalog order.
+ */
 export function buildNewQueue(input: {
   problems: Problem[];
   progressById: Record<string, ProblemProgress>;
   limit: number;
+  /** Optional rng for testability. Default: Math.random. */
+  rng?: () => number;
 }): string[] {
-  const { problems, progressById, limit } = input;
-  const out: string[] = [];
+  const { problems, progressById, limit, rng = Math.random } = input;
+  const candidates: string[] = [];
   for (const p of problems) {
-    if (out.length >= limit) break;
     const prog = progressById[p.id];
     if (prog && getStatus(prog) !== "new") continue;
-    out.push(p.id);
+    candidates.push(p.id);
+  }
+  return shuffle(candidates, rng).slice(0, limit);
+}
+
+/** Returns a shuffled copy of `ids` using a Fisher–Yates shuffle. */
+export function shuffle<T>(ids: T[], rng: () => number = Math.random): T[] {
+  const out = [...ids];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = out[i] as T;
+    out[i] = out[j] as T;
+    out[j] = tmp;
   }
   return out;
 }

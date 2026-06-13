@@ -114,6 +114,8 @@ export function SessionPage() {
         progressById: store.progress,
         limit: settings.dailyNewLimit,
       });
+      // Due reviews stay oldest-first (spaced-repetition order); only the new
+      // questions are randomized across topics (see buildNewQueue).
       queue = [...due, ...news];
     }
 
