@@ -10,6 +10,12 @@ import {
 import { useProgress } from "@/context/ProgressContext";
 import { PROBLEMS, getProblemById } from "@/data/problems";
 import { buildDrillQueue, buildDueQueue, buildNewQueue } from "@/sr/picker";
+import {
+  clearSavedSession,
+  loadSavedSession,
+  restoreSessionState,
+  saveSession,
+} from "@/storage/sessionStore";
 import { previewIntervals } from "@/sr/preview";
 import { DifficultyPill } from "@/components/DifficultyPill";
 import { RatingButtons } from "@/components/RatingButtons";
@@ -87,8 +93,29 @@ export function SessionPage() {
   const [undoSnapshot, setUndoSnapshot] = useState<UndoSnapshot | null>(null);
   const [tally, setTally] = useState<Record<Rating, number>>(EMPTY_TALLY);
 
-  // Build the initial queue once based on URL params.
+  // Identifies the session for these URL params, so a refresh restores the
+  // matching saved session instead of building a fresh (re-randomized) queue.
+  const paramKey = useMemo(() => {
+    const source = params.get("source") ?? "due";
+    const id = params.get("id") ?? "";
+    const topic = params.get("topic") ?? "";
+    return `${source}|${id}|${topic}`;
+  }, [params]);
+
+  // Build the initial queue once based on URL params, or restore an in-progress
+  // session from sessionStorage so refreshing keeps the same questions.
   useEffect(() => {
+    const saved = loadSavedSession();
+    if (saved && saved.paramKey === paramKey) {
+      const restored = restoreSessionState(saved);
+      if (remainingCount(restored) > 0) {
+        setState(restored);
+        setTally(saved.tally);
+        setRevealed(false);
+        return;
+      }
+    }
+
     const source = (params.get("source") ?? "due") as SessionState["source"];
     const id = params.get("id");
     const topic = params.get("topic") as Topic | null;
@@ -130,6 +157,17 @@ export function SessionPage() {
     // We deliberately want this to run only once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Persist the live session so a refresh resumes the same queue. Once the
+  // session is finished we clear it, so revisiting starts a fresh session.
+  useEffect(() => {
+    if (!state) return;
+    if (remainingCount(state) === 0) {
+      clearSavedSession();
+      return;
+    }
+    saveSession(paramKey, state, tally);
+  }, [state, tally, paramKey]);
 
   const currentId = state ? currentProblemId(state) : null;
   const problem = currentId ? getProblemById(currentId) : undefined;

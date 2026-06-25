@@ -60,6 +60,11 @@ export function StatsPage() {
   }, [store.progress]);
 
   const totalAttempts = allAttempts.length;
+  const distinctAttempted = useMemo(
+    () =>
+      Object.values(store.progress).filter((p) => p.attempts.length > 0).length,
+    [store.progress],
+  );
   const totalMastered = topicStats.reduce((acc, t) => acc + t.mastered, 0);
 
   if (totalAttempts === 0) {
@@ -85,8 +90,12 @@ export function StatsPage() {
         <h1 className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Overview
         </h1>
-        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-5">
           <Stat label="Attempts" value={totalAttempts} />
+          <Stat
+            label="Problems tried"
+            value={`${distinctAttempted}/${PROBLEMS.length}`}
+          />
           <Stat label="Mastered" value={`${totalMastered}/${PROBLEMS.length}`} />
           <Stat
             label="Mastery"

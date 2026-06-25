@@ -59,6 +59,22 @@ export function createSession(input: {
   };
 }
 
+/** JSON-safe shape of SessionState (Set -> array) for persistence. */
+export type SerializedSession = Omit<SessionState, "failedOnceThisSession"> & {
+  failedOnceThisSession: ProblemId[];
+};
+
+export function serializeSession(state: SessionState): SerializedSession {
+  return { ...state, failedOnceThisSession: [...state.failedOnceThisSession] };
+}
+
+export function deserializeSession(raw: SerializedSession): SessionState {
+  return {
+    ...raw,
+    failedOnceThisSession: new Set(raw.failedOnceThisSession ?? []),
+  };
+}
+
 export function currentProblemId(state: SessionState): ProblemId | null {
   return state.mainQueue[0] ?? state.deferredQueue[0] ?? null;
 }
