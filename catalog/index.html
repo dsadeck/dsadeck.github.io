@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#141210" />
+
+    <title>Grindspace — Spaced Repetition for NeetCode 150 &amp; LeetCode</title>
+    <meta
+      name="description"
+      content="Free, open-source spaced repetition app for the NeetCode 150. Rate each LeetCode problem and Grindspace schedules it so you actually retain DSA solutions."
+    />
+    <link rel="canonical" href="https://dsadeck.github.io/catalog/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Grindspace" />
+    <meta property="og:title" content="Grindspace — Spaced Repetition for NeetCode 150 &amp; LeetCode" />
+    <meta
+      property="og:description"
+      content="Free, open-source spaced repetition app for the NeetCode 150. Rate each LeetCode problem and Grindspace schedules it so you actually retain DSA solutions."
+    />
+    <meta property="og:url" content="https://dsadeck.github.io/catalog/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Grindspace — Spaced Repetition for NeetCode 150 &amp; LeetCode" />
+    <meta
+      name="twitter:description"
+      content="Free, open-source spaced repetition app for the NeetCode 150. Rate each LeetCode problem and Grindspace schedules it so you actually retain DSA solutions."
+    />
+
+    <!-- Structured data so Google knows this is a web app, not a blog post -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Grindspace",
+        "url": "https://dsadeck.github.io/catalog/",
+        "description": "Free, open-source spaced repetition app for the NeetCode 150 LeetCode problems. Rate each problem and Grindspace schedules it so you actually retain DSA solutions.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any (web browser)",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "isAccessibleForFree": true,
+        "license": "https://opensource.org/licenses/MIT",
+        "keywords": "spaced repetition, NeetCode 150, LeetCode, DSA, data structures and algorithms, interview prep, Leitner system"
+      }
+    </script>
+
+    <!--
+      Inline styles for the SEO/loading state below. React's createRoot
+      replaces #root on mount, so this is only visible briefly on slow
+      connections — but it's also what Googlebot sees on first crawl
+      before it executes our JS.
+    -->
+    <style>
+      #ssr-fallback {
+        max-width: 640px;
+        margin: 64px auto;
+        padding: 0 24px;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+        color: #1e1c18;
+      }
+      #ssr-fallback h1 { font-size: 28px; font-weight: 700; margin: 0 0 12px; }
+      #ssr-fallback p { margin: 12px 0; }
+      #ssr-fallback ul { padding-left: 20px; margin: 12px 0; }
+      #ssr-fallback a { color: #c2410c; }
+      #ssr-fallback .muted { color: #767163; font-size: 14px; }
+      @media (prefers-color-scheme: dark) {
+        #ssr-fallback { color: #f3f2ee; }
+        #ssr-fallback a { color: #fb923c; }
+        #ssr-fallback .muted { color: #a39f94; }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-D8AY2ddy.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CXsiU623.css">
+  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div id="root">
+      <main id="ssr-fallback">
+        <h1>Grindspace — Spaced Repetition for the NeetCode 150</h1>
+        <p>
+          A free, open-source web app that uses a Leitner-style spaced
+          repetition scheduler to help you actually retain your solutions
+          to the <a href="https://neetcode.io/practice/practice/neetcode150">NeetCode 150</a>
+          LeetCode problems instead of re-solving the same ones forever.
+        </p>
+        <p>How it works:</p>
+        <ul>
+          <li>Solve a LeetCode problem.</li>
+          <li>Rate how it went: <em>Again</em>, <em>Hard</em>, <em>Good</em>, or <em>Easy</em>.</li>
+          <li>Grindspace schedules the next review (1 / 3 / 7 / 16 / 35 days).</li>
+          <li>All progress lives in your browser — no account, no backend, no tracking.</li>
+        </ul>
+        <p class="muted">Loading the app…</p>
+        <noscript>
+          <p>
+            <strong>This app requires JavaScript.</strong>
+            Source code:
+            <a href="https://github.com/dsadeck/dsadeck.github.io">github.com/dsadeck/dsadeck.github.io</a>
+          </p>
+        </noscript>
+      </main>
+    </div>
+    <!--
+      Privacy-respecting analytics (GoatCounter): aggregate pageviews only,
+      no cookies, hashed IPs. Skipped on localhost so dev runs don't
+      pollute the dashboard. `no_onload: true` defers the initial count to
+      `useGoatCounter` in src/hooks/, which pings on every React Router
+      navigation so SPA routes are visible (otherwise only the entry HTML
+      would be counted).
+    -->
+    <script>
+      (function () {
+        var h = location.hostname;
+        if (h === "localhost" || h === "127.0.0.1") return;
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "//gc.zgo.at/count.js";
+        s.setAttribute(
+          "data-goatcounter",
+          "https://dsadeck.goatcounter.com/count",
+        );
+        s.setAttribute("data-goatcounter-settings", '{"no_onload": true}');
+        document.head.appendChild(s);
+      })();
+    </script>
+  </body>
+</html>
